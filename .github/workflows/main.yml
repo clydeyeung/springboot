@@ -19,8 +19,8 @@ jobs:
         run: | 
           mvn -B package -e -X --file ./pom.xml
       - name: Build pennywise backend container
-        run: docker build . -t testrestapi:latest
-      - name: Build, Push and Release a Docker Front End container to Heroku. 
+        run: docker build . -t registry.heroku.com/testrestapi/web
+      - name: Build, Push and Release a Docker BackEnd End container to Heroku. 
         uses: gonuit/heroku-docker-deploy@v1.3.3
         with:
           email: ${{ secrets.HEROKU_EMAIL }}
