@@ -16,7 +16,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build PennyWise with Maven
-	  mvn -B package -e -X --file ./pom.xml
+	run:  mvn -B package -e -X --file ./pom.xml
       - name: Build pennywise backend container
         run: docker build . -t testrestapi:latest
       - name: Build, Push and Release a Docker Front End container to Heroku. 
