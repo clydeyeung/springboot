@@ -1,4 +1,31 @@
-FROM openjdk:8-jdk-alpine
-VOLUME /tmp
-COPY target/Spring-boot-tutorial-0.0.1-SNAPSHOT Spring-boot-tutorial-0.0.1-SNAPSHOT
-CMD [“java”,”-Djava.security.egd=file:/dev/./urandom”,”-jar”,”/Spring-boot-tutorial-0.0.1-SNAPSHOT"]
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build PennyWise with Maven
+	  mvn -B package -e -X --file ./pom.xml
+      - name: Build pennywise backend container
+        run: docker build . -t testrestapi:latest
+      - name: Build, Push and Release a Docker Front End container to Heroku. 
+        uses: gonuit/heroku-docker-deploy@v1.3.3
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          dockerfile_directory: .
+          dockerfile_name: Dockerfile
+          process_type: web
+
