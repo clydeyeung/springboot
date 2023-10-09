@@ -1,0 +1,4 @@
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+COPY target/Spring-boot-tutorial-0.0.1-SNAPSHOT Spring-boot-tutorial-0.0.1-SNAPSHOT
+CMD [“java”,”-Djava.security.egd=file:/dev/./urandom”,”-jar”,”/Spring-boot-tutorial-0.0.1-SNAPSHOT"]
